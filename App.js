@@ -1,16 +1,36 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Button, Provider as PaperProvider } from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+
+import Signup from './screens/auth/Signup';
+
+const fetchFonts = () => {
+  return Font.loadAsync({
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+  });
+};
 
 export default function App() {
+  const [loadedFonts, setLoadedFonts] = useState(false);
+
+  if (!loadedFonts) {
+    return (
+      <AppLoading
+        startAsync={fetchFonts}
+        onFinish={() => {
+          setLoadedFonts(true);
+        }}
+      />
+    );
+  }
   return (
     <PaperProvider>
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <StatusBar style='auto' />
-        <Button mode='contained'>Click here!</Button>
-      </View>
+      <StatusBar style='auto' />
+      <Signup />
     </PaperProvider>
   );
 }
