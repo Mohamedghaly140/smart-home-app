@@ -1,27 +1,141 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { TextInput, Title } from 'react-native-paper';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  CheckBox,
+} from 'react-native';
+import { Title, Checkbox, Button } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
+import Input from '../../components/UI/Input';
 import Colors from '../../constants/Colors';
 
 const Signup = () => {
+  const [isSelected, setSelection] = useState(false);
+
   return (
-    <View style={styles.screen}>
-      <LinearGradient
-        style={styles.gradient}
-        colors={[Colors.primary, Colors.accent, Colors.secondary]}
-      >
-        <View style={styles.signup}></View>
-        <Title style={styles.title}>Create new account</Title>
-        <View style={styles.form}>
-          <TextInput
-            style={styles.formControl}
-            label='Username'
-            mode='outlined'
-          />
-        </View>
-      </LinearGradient>
-    </View>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.screen}>
+        <LinearGradient
+          style={styles.gradient}
+          colors={[Colors.accent, Colors.secondary]}
+        >
+          <ScrollView>
+            <KeyboardAvoidingView
+              behavior='padding'
+              keyboardVerticalOffset={200}
+              style={{ flex: 1 }}
+            >
+              <View style={styles.signup}>
+                <Title style={styles.title}>Create new account</Title>
+                <View style={styles.form}>
+                  <View style={styles.formControl}>
+                    <Input
+                      id='username'
+                      label='User Name'
+                      keyboardType='default'
+                      autoCapitalize='sentences'
+                      autoCorrect
+                      returnKeyType='next'
+                      onInputChange={() => {}}
+                      required
+                    />
+                  </View>
+                  <View style={styles.formControl}>
+                    <Input
+                      id='email'
+                      label='E-mail'
+                      keyboardType='email-address'
+                      autoCapitalize='sentences'
+                      autoCorrect
+                      returnKeyType='next'
+                      onInputChange={() => {}}
+                      required
+                    />
+                  </View>
+                  <View style={styles.formControl}>
+                    <Input
+                      id='phone'
+                      label='Phone Number'
+                      keyboardType='phone-pad'
+                      returnKeyType='next'
+                      onInputChange={() => {}}
+                      required
+                    />
+                  </View>
+                  <View style={styles.formControl}>
+                    <Input
+                      id='password'
+                      label='Password'
+                      keyboardType='default'
+                      returnKeyType='next'
+                      onInputChange={() => {}}
+                      required
+                    />
+                  </View>
+                  <View style={styles.formControl}>
+                    <Input
+                      id='confirmPassword'
+                      label='Confirm Password'
+                      keyboardType='default'
+                      returnKeyType='next'
+                      onInputChange={() => {}}
+                      required
+                    />
+                  </View>
+                  <View style={styles.formControl}>
+                    <View style={styles.checkboxContainer}>
+                      <CheckBox
+                        value={isSelected}
+                        onValueChange={setSelection}
+                        style={styles.checkbox}
+                      />
+                      <Checkbox
+                        status={isSelected ? 'checked' : 'unchecked'}
+                        onPress={() => {}}
+                        color={Colors.accent}
+                      />
+                      <Text style={styles.label}>
+                        Agree the <Text style={styles.strong}>terms</Text> and{' '}
+                        <Text style={styles.strong}>privacy policy</Text>
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.formControl}>
+                    <Button mode='contained' onPress={() => {}}>
+                      Sign up
+                    </Button>
+                  </View>
+                  <View style={styles.btn}>
+                    <Button
+                      mode='text'
+                      color='#fff'
+                      uppercase={false}
+                      onPress={() => {}}
+                    >
+                      Already have an account ?
+                    </Button>
+                  </View>
+                  <View style={styles.btn}>
+                    <Button mode='contained' onPress={() => {}}>
+                      Sign in
+                    </Button>
+                  </View>
+                </View>
+              </View>
+            </KeyboardAvoidingView>
+          </ScrollView>
+        </LinearGradient>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -43,12 +157,31 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 22,
     textAlign: 'center',
+    marginTop: '5%',
   },
   form: {
     width: '100%',
     justifyContent: 'center',
   },
   formControl: {
-    marginHorizontal: '5%',
+    marginVertical: '1%',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: '3%',
+  },
+  checkbox: {
+    alignSelf: 'center',
+    color: '#fff',
+  },
+  label: {
+    color: '#fff',
+  },
+  strong: {
+    fontFamily: 'open-sans-bold',
+  },
+  btn: {
+    marginVertical: '3%',
   },
 });
