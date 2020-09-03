@@ -30,8 +30,8 @@ const Signup = () => {
         >
           <ScrollView>
             <KeyboardAvoidingView
-              behavior='padding'
-              keyboardVerticalOffset={200}
+              behavior='height'
+              keyboardVerticalOffset={100}
               style={{ flex: 1 }}
             >
               <View style={styles.signup}>
@@ -59,6 +59,7 @@ const Signup = () => {
                       returnKeyType='next'
                       onInputChange={() => {}}
                       required
+                      email
                     />
                   </View>
                   <View style={styles.formControl}>
@@ -125,7 +126,12 @@ const Signup = () => {
                     </Button>
                   </View>
                   <View style={styles.btn}>
-                    <Button mode='contained' onPress={() => {}}>
+                    <Button
+                      style={styles.signinBtn}
+                      mode='contained'
+                      color={Colors.primary}
+                      onPress={() => {}}
+                    >
                       Sign in
                     </Button>
                   </View>
@@ -183,5 +189,8 @@ const styles = StyleSheet.create({
   },
   btn: {
     marginVertical: '3%',
+  },
+  signinBtn: {
+    backgroundColor: '#fff',
   },
 });

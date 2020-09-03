@@ -6,11 +6,13 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
 import Signup from './screens/auth/Signup';
+import Login from './screens/auth/Login';
 
 const fetchFonts = () => {
   return Font.loadAsync({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
     'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+    'hemi-head': require('./assets/fonts/hemiheadbdit.ttf'),
   });
 };
 
@@ -30,7 +32,7 @@ export default function App() {
   return (
     <PaperProvider>
       <StatusBar style='auto' />
-      <Signup />
+      <Login />
     </PaperProvider>
   );
 }
