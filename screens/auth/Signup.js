@@ -14,7 +14,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Input from '../../components/UI/Input';
 import Colors from '../../constants/Colors';
 
-const Signup = () => {
+const Signup = props => {
   const [isSelected, setSelection] = useState(false);
 
   return (
@@ -130,7 +130,9 @@ const Signup = () => {
                       style={styles.signinBtn}
                       mode='contained'
                       color={Colors.primary}
-                      onPress={() => {}}
+                      onPress={() => {
+                        props.navigation.navigate('LoginScreen');
+                      }}
                     >
                       Sign in
                     </Button>

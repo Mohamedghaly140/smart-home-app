@@ -7,14 +7,13 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   ScrollView,
-  CheckBox,
 } from 'react-native';
-import { Title, Checkbox, Button } from 'react-native-paper';
+import { Title, Button } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import Input from '../../components/UI/Input';
 import Colors from '../../constants/Colors';
 
-const Signup = () => {
+const Signup = props => {
   const [isSelected, setSelection] = useState(false);
 
   return (
@@ -88,7 +87,12 @@ const Signup = () => {
                   </Button>
                 </View>
                 <View style={styles.btn}>
-                  <Button mode='contained' onPress={() => {}}>
+                  <Button
+                    mode='contained'
+                    onPress={() => {
+                      props.navigation.goBack();
+                    }}
+                  >
                     Sign up
                   </Button>
                 </View>
@@ -107,6 +111,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'center',
+    alignContent: 'center',
   },
   gradient: {
     flex: 1,

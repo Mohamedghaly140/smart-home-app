@@ -8,6 +8,8 @@ import { AppLoading } from 'expo';
 import Signup from './screens/auth/Signup';
 import Login from './screens/auth/Login';
 
+import AppNavigator from './navigation/AppNavigator';
+
 const fetchFonts = () => {
   return Font.loadAsync({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
@@ -31,8 +33,8 @@ export default function App() {
   }
   return (
     <PaperProvider>
-      <StatusBar style='auto' />
-      <Login />
+      <StatusBar style='light' />
+      <AppNavigator />
     </PaperProvider>
   );
 }
