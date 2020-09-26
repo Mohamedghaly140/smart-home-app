@@ -9,7 +9,7 @@ import {
   ScrollView,
   CheckBox,
 } from 'react-native';
-import { Title, Checkbox, Button } from 'react-native-paper';
+import { Title, Button } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import Input from '../../components/UI/Input';
 import Colors from '../../constants/Colors';
@@ -99,11 +99,6 @@ const Signup = props => {
                         onValueChange={setSelection}
                         style={styles.checkbox}
                       />
-                      <Checkbox
-                        status={isSelected ? 'checked' : 'unchecked'}
-                        onPress={() => {}}
-                        color={Colors.accent}
-                      />
                       <Text style={styles.label}>
                         Agree the <Text style={styles.strong}>terms</Text> and{' '}
                         <Text style={styles.strong}>privacy policy</Text>
@@ -111,7 +106,11 @@ const Signup = props => {
                     </View>
                   </View>
                   <View style={styles.formControl}>
-                    <Button mode='contained' onPress={() => {}}>
+                    <Button
+                      mode='contained'
+                      style={{ backgroundColor: Colors.secondary }}
+                      onPress={() => {}}
+                    >
                       Sign up
                     </Button>
                   </View>
@@ -182,6 +181,7 @@ const styles = StyleSheet.create({
   checkbox: {
     alignSelf: 'center',
     color: '#fff',
+    marginRight: '2%',
   },
   label: {
     color: '#fff',

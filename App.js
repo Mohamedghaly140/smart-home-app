@@ -5,8 +5,8 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
-import Signup from './screens/auth/Signup';
-import Login from './screens/auth/Login';
+import Signup from './screens/auth/SignupScreen';
+import Login from './screens/auth/LoginScreen';
 
 import AppNavigator from './navigation/AppNavigator';
 

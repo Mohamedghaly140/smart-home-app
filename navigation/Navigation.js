@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Signup from '../screens/auth/Signup';
-import Login from '../screens/auth/Login';
+import Signup from '../screens/auth/SignupScreen';
+import Login from '../screens/auth/LoginScreen';
 
 const HomeStack = createStackNavigator();
 
