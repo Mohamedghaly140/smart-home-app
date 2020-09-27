@@ -13,9 +13,15 @@ import {
 import HomeScreen, {
   screenOptions as homeScreenOptions,
 } from '../screens/App/HomeScreen';
-import ProfileScreen from '../screens/App/ProfileScreen';
-import SettingsScreen from '../screens/App/SettingsScreen';
-import StaticsScreen from '../screens/App/StaticsScreen';
+import ProfileScreen, {
+  screenOptions as profileScreenOptions,
+} from '../screens/App/ProfileScreen';
+import SettingsScreen, {
+  screenOptions as settingsScreenOptions,
+} from '../screens/App/SettingsScreen';
+import StaticsScreen, {
+  screenOptions as staticsScreenOptions,
+} from '../screens/App/StaticsScreen';
 import Signup from '../screens/auth/SignupScreen';
 import Login from '../screens/auth/LoginScreen';
 
@@ -77,7 +83,11 @@ const StaticsNavigator = () => {
         },
       }}
     >
-      <StaticsStack.Screen name='statics' component={StaticsScreen} />
+      <StaticsStack.Screen
+        name='statics'
+        component={StaticsScreen}
+        options={staticsScreenOptions}
+      />
     </StaticsStack.Navigator>
   );
 };
@@ -97,7 +107,11 @@ export const ProfileNavigator = () => {
         },
       }}
     >
-      <ProfileStack.Screen name='profile' component={ProfileScreen} />
+      <ProfileStack.Screen
+        name='profile'
+        component={ProfileScreen}
+        options={profileScreenOptions}
+      />
     </ProfileStack.Navigator>
   );
 };
@@ -117,7 +131,11 @@ const SettingsNavigator = () => {
         },
       }}
     >
-      <SettingsStack.Screen name='settings' component={SettingsScreen} />
+      <SettingsStack.Screen
+        name='settings'
+        component={SettingsScreen}
+        options={settingsScreenOptions}
+      />
     </SettingsStack.Navigator>
   );
 };
