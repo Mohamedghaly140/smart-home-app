@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Platform, Image, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import {
   Ionicons,
@@ -9,7 +10,9 @@ import {
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
 
-import HomeScreen from '../screens/App/HomeScreen';
+import HomeScreen, {
+  screenOptions as homeScreenOptions,
+} from '../screens/App/HomeScreen';
 import ProfileScreen from '../screens/App/ProfileScreen';
 import SettingsScreen from '../screens/App/SettingsScreen';
 import StaticsScreen from '../screens/App/StaticsScreen';
@@ -50,14 +53,18 @@ const HomeNavigator = () => {
         },
       }}
     >
-      <HomeStack.Screen name='home' component={HomeScreen} />
+      <HomeStack.Screen
+        name='home'
+        component={HomeScreen}
+        options={homeScreenOptions}
+      />
     </HomeStack.Navigator>
   );
 };
 
 const StaticsStack = createStackNavigator();
 
-export const StaticsNavigator = () => {
+const StaticsNavigator = () => {
   return (
     <StaticsStack.Navigator
       screenOptions={{
@@ -97,7 +104,7 @@ export const ProfileNavigator = () => {
 
 const SettingsStack = createStackNavigator();
 
-export const SettingsNavigator = () => {
+const SettingsNavigator = () => {
   return (
     <SettingsStack.Navigator
       screenOptions={{
@@ -182,6 +189,16 @@ export const BottomTabNavigator = () => {
         }}
       />
     </Tab.Navigator>
+  );
+};
+
+const AppDrawer = createDrawerNavigator();
+
+export const AppDrawerNavigator = () => {
+  return (
+    <AppDrawer.Navigator headerMode='none'>
+      <AppDrawer.Screen name='Home' component={BottomTabNavigator} />
+    </AppDrawer.Navigator>
   );
 };
 
