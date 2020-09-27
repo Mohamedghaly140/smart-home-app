@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 
-import { AuthNavigator } from './Navigation';
+import { AuthNavigator, BottomTabNavigator } from './Navigation';
 
 const AppNavigator = props => {
   return (
     <NavigationContainer>
-      <AuthNavigator />
+      <BottomTabNavigator />
     </NavigationContainer>
   );
 };
