@@ -240,7 +240,7 @@ export const BottomTabNavigator = () => {
         component={SupportNavigator}
         options={{
           tabBarLabel: 'Support',
-          tabBarAccessibilityLabel: 'Settings',
+          tabBarAccessibilityLabel: 'Support',
           tabBarIcon: ({ color }) => (
             <AntDesign name='customerservice' size={26} color={color} />
           ),
