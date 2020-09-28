@@ -9,6 +9,7 @@ import {
   MaterialIcons,
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 import HomeScreen, {
   screenOptions as homeScreenOptions,
@@ -22,10 +23,14 @@ import SettingsScreen, {
 import StaticsScreen, {
   screenOptions as staticsScreenOptions,
 } from '../screens/App/StaticsScreen';
+import SupportScreen, {
+  screenOptions as supportScreenOptions,
+} from '../screens/App/SupportScreen';
 import Signup from '../screens/auth/SignupScreen';
 import Login from '../screens/auth/LoginScreen';
 
 import Logo from '../components/UI/Logo';
+import { DrawerContent } from '../screens/DrawerContent';
 
 import Colors from '../constants/Colors';
 
@@ -140,6 +145,30 @@ const SettingsNavigator = () => {
   );
 };
 
+const SupportStack = createStackNavigator();
+
+const SupportNavigator = () => {
+  return (
+    <SupportStack.Navigator
+      screenOptions={{
+        headerBackTitleVisible: false,
+        title: 'Support',
+        headerTintColor: '#fff',
+        headerStyle: {
+          backgroundColor: Colors.accent,
+          shadowColor: 'transparent',
+        },
+      }}
+    >
+      <SupportStack.Screen
+        name='support'
+        component={SupportScreen}
+        options={supportScreenOptions}
+      />
+    </SupportStack.Navigator>
+  );
+};
+
 export const AuthNavigator = () => {
   return (
     <AuthStack.Navigator headerMode='none'>
@@ -206,6 +235,17 @@ export const BottomTabNavigator = () => {
           ),
         }}
       />
+      <Tab.Screen
+        name='support'
+        component={SupportNavigator}
+        options={{
+          tabBarLabel: 'Support',
+          tabBarAccessibilityLabel: 'Settings',
+          tabBarIcon: ({ color }) => (
+            <AntDesign name='customerservice' size={26} color={color} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };
@@ -214,7 +254,7 @@ const AppDrawer = createDrawerNavigator();
 
 export const AppDrawerNavigator = () => {
   return (
-    <AppDrawer.Navigator headerMode='none'>
+    <AppDrawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
       <AppDrawer.Screen name='Home' component={BottomTabNavigator} />
     </AppDrawer.Navigator>
   );

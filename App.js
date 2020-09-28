@@ -6,11 +6,12 @@ import { Provider as ReduxProvider } from 'react-redux';
 import ReduxThunk from 'redux-thunk';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
+import { enableScreens } from 'react-native-screens';
 
-import Signup from './screens/auth/SignupScreen';
-import Login from './screens/auth/LoginScreen';
 import AppNavigator from './navigation/AppNavigator';
 import authReducer from './store/reducers/auth';
+
+enableScreens();
 
 const rootReducer = combineReducers({
   auth: authReducer,
