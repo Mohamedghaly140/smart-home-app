@@ -1,20 +1,96 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer, useEffect, useCallback } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
   ScrollView,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { Title, Button } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import Input from '../../components/UI/Input';
 import Colors from '../../constants/Colors';
+import * as authActions from '../../store/actions/auth';
+
+const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
+
+const formReducer = (state, action) => {
+  if (action.type === FORM_INPUT_UPDATE) {
+    const updatedValues = {
+      ...state.inputValues,
+      [action.input]: action.value,
+    };
+    const updatedValidities = {
+      ...state.inputValidities,
+      [action.input]: action.isValid,
+    };
+    let updatedFormIsValid = true;
+    for (const key in updatedValidities) {
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
+    }
+    return {
+      formIsValid: updatedFormIsValid,
+      inputValidities: updatedValidities,
+      inputValues: updatedValues,
+    };
+  }
+  return state;
+};
 
 const Signup = props => {
-  const [isSelected, setSelection] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+  const dispatch = useDispatch();
+
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+      email: '',
+      password: '',
+    },
+    inputValidities: {
+      email: false,
+      password: false,
+    },
+    formIsValid: false,
+  });
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert('An Error Occurred!', error, [{ text: 'Okay' }]);
+    }
+  }, [error]);
+
+  const authHandler = async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(
+        authActions.login(
+          formState.inputValues.email,
+          formState.inputValues.password
+        )
+      );
+    } catch (err) {
+      setError(err.message);
+      setIsLoading(false);
+    }
+  };
+
+  const inputChangeHandler = useCallback(
+    (inputIdentifier, inputValue, inputValidity) => {
+      dispatchFormState({
+        type: FORM_INPUT_UPDATE,
+        value: inputValue,
+        isValid: inputValidity,
+        input: inputIdentifier,
+      });
+    },
+    [dispatchFormState]
+  );
 
   return (
     <TouchableWithoutFeedback
@@ -44,7 +120,7 @@ const Signup = props => {
                       autoCapitalize='sentences'
                       autoCorrect
                       returnKeyType='next'
-                      onInputChange={() => {}}
+                      onInputChange={inputChangeHandler}
                       required
                       email
                     />
@@ -56,14 +132,25 @@ const Signup = props => {
                     label='Password'
                     keyboardType='default'
                     returnKeyType='next'
-                    onInputChange={() => {}}
+                    autoCapitalize='none'
+                    secureTextEntry
+                    onInputChange={inputChangeHandler}
                     required
                   />
                 </View>
                 <View style={styles.btn}>
-                  <Button mode='contained' onPress={() => {}}>
-                    Login
-                  </Button>
+                  {isLoading ? (
+                    <ActivityIndicator size='small' color={Colors.primary} />
+                  ) : (
+                    <Button
+                      mode='contained'
+                      color='#fff'
+                      style={{ backgroundColor: Colors.secondary }}
+                      onPress={authHandler}
+                    >
+                      Login
+                    </Button>
+                  )}
                 </View>
                 <View style={styles.btn}>
                   <Button
@@ -89,6 +176,8 @@ const Signup = props => {
                 <View style={styles.btn}>
                   <Button
                     mode='contained'
+                    style={styles.signupBtn}
+                    color={Colors.primary}
                     onPress={() => {
                       props.navigation.goBack();
                     }}
@@ -126,7 +215,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 22,
     textAlign: 'center',
-    marginTop: '5%',
+    marginTop: '7%',
   },
   form: {
     width: '100%',
@@ -152,5 +241,8 @@ const styles = StyleSheet.create({
   },
   btn: {
     marginVertical: '3%',
+  },
+  signupBtn: {
+    backgroundColor: '#fff',
   },
 });

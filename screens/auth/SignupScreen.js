@@ -1,21 +1,105 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer, useEffect, useCallback } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
   ScrollView,
   CheckBox,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { Title, Button } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import Input from '../../components/UI/Input';
 import Colors from '../../constants/Colors';
 
+import * as authActions from '../../store/actions/auth';
+
+const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
+
+const formReducer = (state, action) => {
+  if (action.type === FORM_INPUT_UPDATE) {
+    const updatedValues = {
+      ...state.inputValues,
+      [action.input]: action.value,
+    };
+    const updatedValidities = {
+      ...state.inputValidities,
+      [action.input]: action.isValid,
+    };
+    let updatedFormIsValid = true;
+    for (const key in updatedValidities) {
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
+    }
+    return {
+      formIsValid: updatedFormIsValid,
+      inputValidities: updatedValidities,
+      inputValues: updatedValues,
+    };
+  }
+  return state;
+};
+
 const Signup = props => {
   const [isSelected, setSelection] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+  const dispatch = useDispatch();
+
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+      username: '',
+      email: '',
+      phone: '',
+      password: '',
+    },
+    inputValidities: {
+      username: false,
+      email: false,
+      phone: false,
+      password: false,
+    },
+    formIsValid: false,
+  });
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert('An Error Occurred!', error, [{ text: 'Okay' }]);
+    }
+  }, [error]);
+
+  const authHandler = async () => {
+    let action = authActions.signup(
+      formState.inputValues.username,
+      formState.inputValues.email,
+      formState.inputValues.phone,
+      formState.inputValues.password
+    );
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(action);
+    } catch (err) {
+      setError(err.message);
+      setIsLoading(false);
+    }
+  };
+
+  const inputChangeHandler = useCallback(
+    (inputIdentifier, inputValue, inputValidity) => {
+      dispatchFormState({
+        type: FORM_INPUT_UPDATE,
+        value: inputValue,
+        isValid: inputValidity,
+        input: inputIdentifier,
+      });
+    },
+    [dispatchFormState]
+  );
 
   return (
     <TouchableWithoutFeedback
@@ -45,7 +129,7 @@ const Signup = props => {
                       autoCapitalize='sentences'
                       autoCorrect
                       returnKeyType='next'
-                      onInputChange={() => {}}
+                      onInputChange={inputChangeHandler}
                       required
                     />
                   </View>
@@ -57,7 +141,7 @@ const Signup = props => {
                       autoCapitalize='sentences'
                       autoCorrect
                       returnKeyType='next'
-                      onInputChange={() => {}}
+                      onInputChange={inputChangeHandler}
                       required
                       email
                     />
@@ -68,7 +152,7 @@ const Signup = props => {
                       label='Phone Number'
                       keyboardType='phone-pad'
                       returnKeyType='next'
-                      onInputChange={() => {}}
+                      onInputChange={inputChangeHandler}
                       required
                     />
                   </View>
@@ -78,7 +162,9 @@ const Signup = props => {
                       label='Password'
                       keyboardType='default'
                       returnKeyType='next'
-                      onInputChange={() => {}}
+                      autoCapitalize='none'
+                      secureTextEntry
+                      onInputChange={inputChangeHandler}
                       required
                     />
                   </View>
@@ -88,12 +174,14 @@ const Signup = props => {
                       label='Confirm Password'
                       keyboardType='default'
                       returnKeyType='next'
+                      autoCapitalize='none'
+                      secureTextEntry
                       onInputChange={() => {}}
                       required
                     />
                   </View>
                   <View style={styles.formControl}>
-                    <View style={styles.checkboxContainer}>
+                    {/* <View style={styles.checkboxContainer}>
                       <CheckBox
                         value={isSelected}
                         onValueChange={setSelection}
@@ -103,16 +191,20 @@ const Signup = props => {
                         Agree the <Text style={styles.strong}>terms</Text> and{' '}
                         <Text style={styles.strong}>privacy policy</Text>
                       </Text>
-                    </View>
+                    </View> */}
                   </View>
                   <View style={styles.formControl}>
-                    <Button
-                      mode='contained'
-                      style={{ backgroundColor: Colors.secondary }}
-                      onPress={() => {}}
-                    >
-                      Sign up
-                    </Button>
+                    {isLoading ? (
+                      <ActivityIndicator size='small' color={Colors.accent} />
+                    ) : (
+                      <Button
+                        mode='contained'
+                        style={{ backgroundColor: Colors.secondary }}
+                        onPress={authHandler}
+                      >
+                        Sign up
+                      </Button>
+                    )}
                   </View>
                   <View style={styles.btn}>
                     <Button

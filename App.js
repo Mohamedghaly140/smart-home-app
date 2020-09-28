@@ -1,14 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { Provider as ReduxProvider } from 'react-redux';
+import ReduxThunk from 'redux-thunk';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
 import Signup from './screens/auth/SignupScreen';
 import Login from './screens/auth/LoginScreen';
-
 import AppNavigator from './navigation/AppNavigator';
+import authReducer from './store/reducers/auth';
+
+const rootReducer = combineReducers({
+  auth: authReducer,
+});
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -32,18 +40,11 @@ export default function App() {
     );
   }
   return (
-    <PaperProvider>
-      <StatusBar style='light' />
-      <AppNavigator />
-    </PaperProvider>
+    <ReduxProvider store={store}>
+      <PaperProvider>
+        <StatusBar style='light' />
+        <AppNavigator />
+      </PaperProvider>
+    </ReduxProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
